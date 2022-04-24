@@ -2,21 +2,37 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
-workflows:
-  test-env-vars:
-    jobs:
-      - build
+# Define a job to be invoked later in a workflow.
+# See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 
 jobs:
-  build:
+
+  save_hello_world_output:
     docker:
-      - image: cimg/base:2021.11
-        auth:
-          username: mydockerhub-user
-          password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
+      - image: circleci/node:13.8.0
     steps:
-      - checkout
       - run:
-          name: "echo an env var that is part of our project"
-          command: |
-            echo $My_name
+         echo "hello world this is abdalla kamesh 2" > ~/output.txt
+      - persist_to_workspace:
+          root: ~/
+          paths:
+            - output.txt
+
+  print_output_file :
+    docker:
+      - image: circleci/node:13.8.0
+    steps:
+      - attach_workspace: 
+          at: ~/
+      - run:
+          cat ~/output.txt
+# Invoke jobs via workflows
+# See: https://circleci.com/docs/2.0/configuration-reference/#workflows
+workflows:
+  save_hello_world_output-workflow:
+    jobs:
+      - save_hello_world_output
+      - print_output_file
+      
+
+
