@@ -16,34 +16,12 @@ jobs:
       - image: circleci/node:13.8.0
     steps:
       - print_pipe_id
-
-  # save_hello_world_output:
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - run:
-  #        echo "hello world this is abdalla kamesh 2" > ~/output.txt
-  #     - persist_to_workspace:
-  #         root: ~/
-  #         paths:
-  #           - output.txt
-
-  # print_output_file :
-  #   docker:
-  #     - image: circleci/node:13.8.0
-  #   steps:
-  #     - attach_workspace:
-  #         at: ~/
-  #     - run: cat ~/output.txt
-
+      
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
-  save_hello_world_output-workflow:
+  print-command-workflow:
     jobs:
       - print_command
-      
-      # - print_output_file:
-      #     requires:
-      #       - save_hello_world_output
+
 
